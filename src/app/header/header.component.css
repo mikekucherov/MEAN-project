@@ -1,0 +1,16 @@
+a {
+  text-decoration: none;
+  color: rgb(19, 38, 124);
+}
+
+ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+}

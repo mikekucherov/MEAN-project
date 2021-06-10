@@ -1,0 +1,15 @@
+:host {
+  display: block;
+  margin-top: 1rem;
+}
+
+mat-spinner {
+  margin: auto;
+}
+
+.post-image img {
+  max-height: 200px;
+
+  background-size: cover;
+}
+
