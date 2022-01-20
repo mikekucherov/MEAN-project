@@ -5,6 +5,7 @@ import { PostsService } from "../posts.service";
 import { Subscription } from "rxjs";
 import { PageEvent } from "@angular/material";
 import { AuthService } from "src/app/auth/auth.service";
+import { switchMap } from "rxjs/operators";
 
 @Component({
   selector: "app-post-list",
@@ -34,7 +35,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       .getAuthStatusListener()
       .subscribe((isAuth) => (this.isAuthenticated = isAuth));
     this.isLoading = true;
-    this.postsService.getPosts(this.postsPerPage, this.currentPage);
+    this.postsService.getPosts(this.postsPerPage, this.currentPage).subscribe();
     this.postsSub = this.postsService
       .getPostUpdateListener()
       .subscribe((postData: { posts: Post[]; postCount: number }) => {
@@ -52,21 +53,25 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   onDelete(id: string) {
     this.isLoading = true;
-    this.postsService.deletePost(id).subscribe(
-      () => {
-        // FIXME Subscription inside subscription!! change to switchMap
-        this.postsService.getPosts(this.postsPerPage, this.currentPage);
-      },
-      (err) => {
+    this.postsService
+      .deletePost(id)
+      .pipe(
+        switchMap(() => {
+          return this.postsService.getPosts(
+            this.postsPerPage,
+            this.currentPage
+          );
+        })
+      )
+      .subscribe(null, (err) => {
         this.isLoading = false;
-      }
-    );
+      });
   }
 
   onChangePage(pageData: PageEvent) {
     this.isLoading = true;
     this.currentPage = pageData.pageIndex + 1;
     this.postsPerPage = pageData.pageSize;
-    this.postsService.getPosts(this.postsPerPage, this.currentPage);
+    this.postsService.getPosts(this.postsPerPage, this.currentPage).subscribe();
   }
 }

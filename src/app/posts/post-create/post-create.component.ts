@@ -41,10 +41,10 @@ export class PostCreateComponent implements OnInit {
     });
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       if (paramMap.has('postId')) {
-        this._mode = 'edit';
-        this._postId = paramMap.get('postId');
+        this.mode = 'edit';
+        this.postId = paramMap.get('postId');
         this.isLoading = true;
-        this.postsService.getPost(this._postId).subscribe((postData) => {
+        this.postsService.getPost(this.postId).subscribe((postData) => {
           this.isLoading = false;
           this.post = {
             id: postData._id,
@@ -60,8 +60,8 @@ export class PostCreateComponent implements OnInit {
           });
         });
       } else {
-        this._mode = 'create';
-        this._postId = null;
+        this.mode = 'create';
+        this.postId = null;
       }
     });
   }
@@ -71,7 +71,7 @@ export class PostCreateComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    if (this._mode === 'create') {
+    if (this.mode === 'create') {
       this.postsService.addPost(
         this.form.value.title,
         this.form.value.content,
@@ -79,7 +79,7 @@ export class PostCreateComponent implements OnInit {
       );
     } else {
       this.postsService.updatePost(
-        this._postId,
+        this.postId,
         this.form.value.title,
         this.form.value.content,
         this.form.value.image
