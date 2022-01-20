@@ -8,8 +8,12 @@ mat-spinner {
 }
 
 .post-image img {
-  max-height: 200px;
+  /*max-height: 200px;*/
 
   background-size: cover;
+}
+
+.post-list_panel {
+  margin-bottom: 8px;
 }
 

@@ -8,7 +8,10 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 
-mongoose.connect("mongodb+srv://mike:1OKMi6MnGdvGyCje@cluster0-mqwpm.mongodb.net/MyDB?retryWrites=true&w=majority").then(() => {
+// MONGO User Password
+// Cd8e5m94VMwHmic
+
+mongoose.connect("mongodb+srv://sierra:Cd8e5m94VMwHmic@meancluster.juc0m.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").then(() => {
   console.log('Connected to DB!');
 }).catch(() => {
   console.error('Connection failed!');

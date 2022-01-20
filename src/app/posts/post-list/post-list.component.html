@@ -1,6 +1,8 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
 <mat-accordion multi="true" *ngIf="posts.length > 0 && !isLoading; else dummy">
-  <mat-expansion-panel *ngFor="let post of posts">
+  <mat-expansion-panel *ngFor="let post of posts"
+                       class="post-list_panel"
+  >
     <mat-expansion-panel-header>
       <p>{{ post.title }}</p>
     </mat-expansion-panel-header>
@@ -8,7 +10,7 @@
       <img [src]="post.imagePath" />
     </div>
     <p>{{ post.content }}</p>
-    <mat-action-row *ngIf="isAuthenticated">
+    <mat-action-row *ngIf="isAuthenticated && userId === post.creator">
       <a mat-button color="accent" [routerLink]="['/edit', post.id]">EDIT</a>
       <button mat-button color="warn" (click)="onDelete(post.id)">
         DELETE

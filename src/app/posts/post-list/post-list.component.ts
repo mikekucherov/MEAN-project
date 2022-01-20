@@ -18,6 +18,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   postsPerPage = 2;
   currentPage = 1;
   pageSizeOptions = [1, 2, 5, 10];
+  userId: string;
   private postsSub: Subscription;
   isAuthenticated;
   authSubs: Subscription;
@@ -26,6 +27,9 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isAuthenticated = this.auth.getIsAuthenticatedStatus();
+
+    this.userId = this.auth.getUserId();
+
     this.authSubs = this.auth
       .getAuthStatusListener()
       .subscribe((isAuth) => (this.isAuthenticated = isAuth));
@@ -37,6 +41,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         this.posts = postData.posts;
         this.totalPosts = postData.postCount;
+        this.userId = this.auth.getUserId();
       });
   }
 
@@ -47,9 +52,15 @@ export class PostListComponent implements OnInit, OnDestroy {
 
   onDelete(id: string) {
     this.isLoading = true;
-    this.postsService.deletePost(id).subscribe(() => {
-      this.postsService.getPosts(this.postsPerPage, this.currentPage);
-    });
+    this.postsService.deletePost(id).subscribe(
+      () => {
+        // FIXME Subscription inside subscription!! change to switchMap
+        this.postsService.getPosts(this.postsPerPage, this.currentPage);
+      },
+      (err) => {
+        this.isLoading = false;
+      }
+    );
   }
 
   onChangePage(pageData: PageEvent) {
