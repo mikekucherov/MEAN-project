@@ -4,6 +4,9 @@ import { Subject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { map, tap } from "rxjs/operators";
 import { Router } from "@angular/router";
+import {environment} from '../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl + "/posts";
 
 @Injectable({ providedIn: "root" })
 export class PostsService {
@@ -16,7 +19,7 @@ export class PostsService {
     const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
     return this.http
       .get<{ message: string; posts: any; maxPosts: number }>(
-        "http://localhost:3200/api/posts" + queryParams
+        BACKEND_URL + queryParams
       )
       .pipe(
         map((postData) => {
@@ -57,7 +60,7 @@ export class PostsService {
 
     this.http
       .post<{ message: string; post: Post }>(
-        "http://localhost:3200/api/posts",
+        BACKEND_URL,
         postData
       )
       .subscribe((responseData) => {

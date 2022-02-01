@@ -8,10 +8,7 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 
-// MONGO User Password
-// Cd8e5m94VMwHmic
-
-mongoose.connect("mongodb+srv://sierra:Cd8e5m94VMwHmic@meancluster.juc0m.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").then(() => {
+mongoose.connect("mongodb+srv://sierra:"+ process.env.MONGO_ATLAS_PW + "@meancluster.juc0m.mongodb.net/myFirstDatabase?retryWrites=true&w=majority").then(() => {
   console.log('Connected to DB!');
 }).catch(() => {
   console.error('Connection failed!');
